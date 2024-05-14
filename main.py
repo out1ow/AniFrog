@@ -1,5 +1,6 @@
 import sqlite3
-import PySimpleGUI as sg
+from PyQt6 import uic
+from PyQt6.QtWidgets import QApplication
 
 def console_print():
     connection = sqlite3.connect('anime.db')
@@ -67,11 +68,14 @@ def console_print():
 
 def main():
     # console_print()
-    
-    window = sg.Window('My anime')
+    Form, Window = uic.loadUiType("dialog.ui")
 
-    window.close()
-
+    app = QApplication([])
+    window = Window()
+    form = Form()
+    form.setupUi(window)
+    window.show()
+    app.exec()
 
 
 if __name__ == '__main__':
