@@ -1,6 +1,11 @@
+import json
 import sqlite3
-from PyQt6 import uic
-from PyQt6.QtWidgets import QApplication
+import pprint as pp
+
+import requests
+
+from shikimori import Shikimori
+from config import *
 
 def console_print():
     connection = sqlite3.connect('anime.db')
@@ -66,17 +71,18 @@ def console_print():
 
     connection.close()
 
+#def token_saver(token: dict):
+#    with open("token.json", 'w') as f:
+#        f.write(json.dump(token))
+
 def main():
-    # console_print()
-    Form, Window = uic.loadUiType("dialog.ui")
+    pass
+    session = Shikimori("AniFrog", client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
+    print(session.get_user_anime())
+    print("=-=-=-=-=-=-=-=---=-=========================================================================")
+    print(session.get_user_manga())
 
-    app = QApplication([])
-    window = Window()
-    form = Form()
-    form.setupUi(window)
-    window.show()
-    app.exec()
-
-
+    #print(requests.get("https://shikimori.one/api/users/waki0_0?is_nickname=1", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"}).json())
+    # 1501852
 if __name__ == '__main__':
     main()
