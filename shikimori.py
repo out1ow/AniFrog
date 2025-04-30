@@ -1,8 +1,13 @@
+import json
 from typing import Callable, Mapping, Sequence, Optional, Any
-import functools
-import re
+from flask import redirect
 
 from requests_oauthlib import OAuth2Session
+
+
+def token_saver(token: dict):
+    with open("token.json", 'w') as f:
+        f.write(json.dumps(token))
 
 
 class Shikimori:
@@ -16,13 +21,11 @@ class Shikimori:
                  client_secret: Optional[str] = None,
                  token:         Optional[Mapping] = None,
                  redirect_uri:  str = 'urn:ietf:wg:oauth:2.0:oob',
-                 token_saver:   Optional[Callable[[dict], Any]] = None,
                  scope:         Optional[Sequence[str]] = None
                  ) -> None:
 
         self._client_id = client_id
         self._client_secret = client_secret
-        self._token_saver = token_saver or (lambda d: None)
         self._headers = {
             'User-Agent': app_name,
         }
@@ -31,9 +34,9 @@ class Shikimori:
             'client_secret': self._client_secret,
         }
         self._client = OAuth2Session(self._client_id, auto_refresh_url=self._TOKEN_URL, auto_refresh_kwargs=self._extra,
-                               scope=scope, redirect_uri=redirect_uri, token=token, token_updater=self._token_saver)
+                                     scope=scope, redirect_uri=redirect_uri, token=token, token_updater=token_saver)
         self._client.headers.update(self._headers)
-        self.authorize()
+        if token == None: self.authorize()
         self.user_id = self._client.get("https://shikimori.one/api/users/whoami").json()["id"]
 
     def authorize(self):
@@ -44,7 +47,7 @@ class Shikimori:
 
     def fetch_token(self, code: str) -> dict:
         self._client.fetch_token(self._TOKEN_URL, code, client_secret=self._client_secret)
-        self._token_saver(self.token)
+        token_saver(self.token)
         return self.token
 
     @property
@@ -55,11 +58,19 @@ class Shikimori:
         return self._client.get(path).json()
 
     def get_user_data(self) -> list:
-        return self._client.get(f"{self.SHIKIMORI_URL}/api/v2/user_rates?limit=10").json()
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self.user_id}").json()
 
-    def get_user_anime(self) -> list:
-        return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self.user_id}/anime_rates?limit=5000").json()
+    def get_user_anime(self, status: str='') -> list:
+        params = {
+            "limit": 500,
+             "status": status
+        }
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self.user_id}/anime_rates", params=params).json()
 
-    def get_user_manga(self) -> list:
-        return self._client.get(f"{self.SHIKIMORI_URL}/api/users//{self.user_id}/manga_rates?limit=5000").json()
+    def get_user_manga(self, status: str='') -> list:
+        params = {
+            "limit": 500,
+             "status": status
+        }
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/users//{self.user_id}/manga_rates", params=params).json()
 
