@@ -2,9 +2,8 @@ import json
 import sqlite3
 import pprint as pp
 
-import requests
-
 from shikimori import Shikimori
+from ani_frog import AniFrog
 from config import *
 
 def console_print():
@@ -35,6 +34,7 @@ def console_print():
     cursor.execute('select max(length(name)) from dropped')
     max_drp = cursor.fetchall()[0][0]
     "=================================================================="
+    connection.close()
 
     print(('\n+' + '-' * (max_pln + 7)) + ('+' + '-' * (max_wat + 7) ) + ('+' + '-' * (max_com + 7)) + ('+' + '-' * (max_drp + 7) + '+'))
 
@@ -69,20 +69,26 @@ def console_print():
 
     print(('\n+----+' + '-' * (max_pln + 2)) + ('+----+' + '-' * (max_wat + 2) ) + ('+----+' + '-' * (max_com + 2)) + ('+----+' + '-' * (max_drp + 2) + '+'))
 
-    connection.close()
+def fill_database(session: Shikimori, ani_frog: AniFrog):
+    planned = [i["anime"]["russian"] for i in session.get_user_anime("planned")]
+    watching = [(i["anime"]["russian"], i["episodes"], i["anime"]["episodes"]) for i in session.get_user_anime("watching")]
+    completed = [i["anime"]["russian"] for i in session.get_user_anime("completed")]
 
-#def token_saver(token: dict):
-#    with open("token.json", 'w') as f:
-#        f.write(json.dump(token))
+    print(f"The data has been added to the \"planned\" table: {ani_frog.add_planned_anime(planned)}")
+    print(f"The data has been added to the \"watching\" table: {ani_frog.add_watching_anime(watching)}")
+    print(f"The data has been added to the \"completed\" table: {ani_frog.add_completed_anime(completed)}")
 
 def main():
-    pass
-    session = Shikimori("AniFrog", client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
-    print(session.get_user_anime())
-    print("=-=-=-=-=-=-=-=---=-=========================================================================")
-    print(session.get_user_manga())
+    try:
+        with open('token.json') as f:
+            token = json.load(f)
+        session = Shikimori("AniFrog", client_id=CLIENT_ID, client_secret=CLIENT_SECRET, token=token)
+    except Exception:
+        session = Shikimori("AniFrog", client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
 
-    #print(requests.get("https://shikimori.one/api/users/waki0_0?is_nickname=1", headers={"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/85.0.4183.121 Safari/537.36"}).json())
-    # 1501852
+    frog = AniFrog()
+
+    fill_database(session, frog)
+
 if __name__ == '__main__':
     main()
