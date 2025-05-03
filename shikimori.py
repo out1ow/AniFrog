@@ -1,7 +1,8 @@
 import json
-from typing import Callable, Mapping, Sequence, Optional, Any
-from flask import redirect
+from tkinter.font import names
+from typing import Mapping, Sequence, Optional
 
+import requests
 from requests_oauthlib import OAuth2Session
 
 
@@ -67,10 +68,18 @@ class Shikimori:
         }
         return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self.user_id}/anime_rates", params=params).json()
 
-    def get_user_manga(self, status: str='') -> list:
+    def get_anime(self, name: str) -> str:
         params = {
-            "limit": 500,
-             "status": status
+            "search": name
         }
-        return self._client.get(f"{self.SHIKIMORI_URL}/api/users//{self.user_id}/manga_rates", params=params).json()
+        i = self._client.get(f"{self.SHIKIMORI_URL}/api/animes/", params=params).json()[0]['id']
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/animes/{i}").json()
 
+    # def get_anime_preview(self, name: str) -> str:
+    #     data = self.get_anime(name)
+    #     url = "https://shikimori.one" + data[0]["image"]["preview"]
+    #     img = requests.get(url).content
+    #     f = open(f"src/previews/{data[0]['id']}.jpg", "wb")
+    #     f.write(img)
+    #     f.close()
+    #     return f"/src/previews/{data[0]['id']}.jpg"

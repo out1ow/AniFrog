@@ -1,9 +1,11 @@
 import json
 import sqlite3
-import pprint as pp
+from pprint import pprint
 
+
+from main_window import *
 from shikimori import Shikimori
-from ani_frog import AniFrog
+from db_manager import DatabaseManager
 from config import *
 
 def console_print():
@@ -69,14 +71,16 @@ def console_print():
 
     print(('\n+----+' + '-' * (max_pln + 2)) + ('+----+' + '-' * (max_wat + 2) ) + ('+----+' + '-' * (max_com + 2)) + ('+----+' + '-' * (max_drp + 2) + '+'))
 
-def fill_database(session: Shikimori, ani_frog: AniFrog):
+def fill_database(session: Shikimori, db: DatabaseManager):
     planned = [i["anime"]["russian"] for i in session.get_user_anime("planned")]
     watching = [(i["anime"]["russian"], i["episodes"], i["anime"]["episodes"]) for i in session.get_user_anime("watching")]
     completed = [i["anime"]["russian"] for i in session.get_user_anime("completed")]
 
-    print(f"The data has been added to the \"planned\" table: {ani_frog.add_planned_anime(planned)}")
-    print(f"The data has been added to the \"watching\" table: {ani_frog.add_watching_anime(watching)}")
-    print(f"The data has been added to the \"completed\" table: {ani_frog.add_completed_anime(completed)}")
+    db.clear()
+
+    print(f"The data has been added to the \"planned\" table: {db.add_planned_anime(planned)}")
+    print(f"The data has been added to the \"watching\" table: {db.add_watching_anime(watching)}")
+    print(f"The data has been added to the \"completed\" table: {db.add_completed_anime(completed)}")
 
 def main():
     try:
@@ -86,9 +90,14 @@ def main():
     except Exception:
         session = Shikimori("AniFrog", client_id=CLIENT_ID, client_secret=CLIENT_SECRET)
 
-    frog = AniFrog()
+    db = DatabaseManager()
 
-    fill_database(session, frog)
+    fill_database(session, db)
+
+    app = QApplication(sys.argv)
+    ex = MainWindow(session)
+    ex.show()
+    sys.exit(app.exec())
 
 if __name__ == '__main__':
     main()

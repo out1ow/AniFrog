@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>AniFrog</class>
+ <widget class="QMainWindow" name="AniFrog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>537</width>
+    <height>547</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>MainWindow</string>
+  </property>
+  <widget class="QWidget" name="centralwidget">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+     <horstretch>0</horstretch>
+     <verstretch>0</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>500</width>
+     <height>510</height>
+    </size>
+   </property>
+   <widget class="QFrame" name="frame">
+    <property name="geometry">
+     <rect>
+      <x>9</x>
+      <y>9</y>
+      <width>500</width>
+      <height>500</height>
+     </rect>
+    </property>
+    <property name="maximumSize">
+     <size>
+      <width>500</width>
+      <height>500</height>
+     </size>
+    </property>
+    <property name="frameShape">
+     <enum>QFrame::StyledPanel</enum>
+    </property>
+    <property name="frameShadow">
+     <enum>QFrame::Raised</enum>
+    </property>
+    <widget class="QTabWidget" name="tabs">
+     <property name="geometry">
+      <rect>
+       <x>0</x>
+       <y>0</y>
+       <width>500</width>
+       <height>500</height>
+      </rect>
+     </property>
+     <property name="sizePolicy">
+      <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+       <horstretch>0</horstretch>
+       <verstretch>0</verstretch>
+      </sizepolicy>
+     </property>
+     <property name="minimumSize">
+      <size>
+       <width>500</width>
+       <height>0</height>
+      </size>
+     </property>
+     <property name="maximumSize">
+      <size>
+       <width>500</width>
+       <height>500</height>
+      </size>
+     </property>
+     <property name="currentIndex">
+      <number>2</number>
+     </property>
+     <widget class="QWidget" name="planned_tab">
+      <attribute name="title">
+       <string>planned</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout">
+       <item>
+        <layout class="QGridLayout" name="gridLayout">
+         <item row="3" column="0">
+          <widget class="QPushButton" name="plan_delete_button">
+           <property name="text">
+            <string>delete selected</string>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="plan_add_button">
+           <property name="text">
+            <string>add anime</string>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="plan_info">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="plan_name">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>314</width>
+             <height>70</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" rowspan="2">
+          <widget class="QTableWidget" name="plan_table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>170</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="watching_tab">
+      <attribute name="title">
+       <string>watching</string>
+      </attribute>
+      <layout class="QHBoxLayout" name="horizontalLayout_2">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_2">
+         <item row="4" column="0">
+          <widget class="QPushButton" name="watch_delete_button">
+           <property name="text">
+            <string>delete selected</string>
+           </property>
+          </widget>
+         </item>
+         <item row="3" column="0">
+          <widget class="QPushButton" name="watch_add_button">
+           <property name="text">
+            <string>add anime</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" rowspan="2">
+          <widget class="QTableWidget" name="watch_table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>170</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1">
+          <widget class="QLabel" name="watch_name">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>314</width>
+             <height>70</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1">
+          <widget class="QLabel" name="watch_info">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="2" column="0">
+          <widget class="QPushButton" name="watch_edit_button">
+           <property name="text">
+            <string>edit </string>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+     <widget class="QWidget" name="completed_tab">
+      <attribute name="title">
+       <string>completed</string>
+      </attribute>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <layout class="QGridLayout" name="gridLayout_3">
+         <item row="6" column="0">
+          <widget class="QPushButton" name="comp_delete_button">
+           <property name="text">
+            <string>delete selected</string>
+           </property>
+          </widget>
+         </item>
+         <item row="5" column="0">
+          <widget class="QPushButton" name="comp_add_button">
+           <property name="text">
+            <string>add anime</string>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="1" colspan="2">
+          <widget class="QLabel" name="comp_name">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Fixed">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>314</width>
+             <height>70</height>
+            </size>
+           </property>
+           <property name="font">
+            <font>
+             <pointsize>11</pointsize>
+             <weight>75</weight>
+             <bold>true</bold>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="1" column="1" rowspan="6" colspan="2">
+          <widget class="QLabel" name="comp_info">
+           <property name="font">
+            <font>
+             <pointsize>10</pointsize>
+            </font>
+           </property>
+           <property name="frameShape">
+            <enum>QFrame::StyledPanel</enum>
+           </property>
+           <property name="text">
+            <string/>
+           </property>
+           <property name="textFormat">
+            <enum>Qt::AutoText</enum>
+           </property>
+           <property name="alignment">
+            <set>Qt::AlignLeading|Qt::AlignLeft|Qt::AlignTop</set>
+           </property>
+           <property name="wordWrap">
+            <bool>true</bool>
+           </property>
+           <property name="openExternalLinks">
+            <bool>true</bool>
+           </property>
+          </widget>
+         </item>
+         <item row="0" column="0" rowspan="5">
+          <widget class="QTableWidget" name="comp_table">
+           <property name="sizePolicy">
+            <sizepolicy hsizetype="Fixed" vsizetype="Expanding">
+             <horstretch>0</horstretch>
+             <verstretch>0</verstretch>
+            </sizepolicy>
+           </property>
+           <property name="maximumSize">
+            <size>
+             <width>170</width>
+             <height>16777215</height>
+            </size>
+           </property>
+          </widget>
+         </item>
+        </layout>
+       </item>
+      </layout>
+     </widget>
+    </widget>
+   </widget>
+  </widget>
+  <widget class="QMenuBar" name="menubar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>537</width>
+     <height>21</height>
+    </rect>
+   </property>
+  </widget>
+  <widget class="QStatusBar" name="statusbar"/>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>
