@@ -1,7 +1,7 @@
 import sqlite3
 import os
 
-class AniFrog:
+class DatabaseManager:
     _DB_FILE = "ani_frog.db"
 
     def __init__(self):
@@ -37,10 +37,17 @@ class AniFrog:
     def __del__(self):
         self.connection.close()
 
+    def clear(self):
+        self.cursor.execute("DELETE FROM planned")
+        self.cursor.execute("DELETE FROM watching")
+        self.cursor.execute("DELETE FROM completed")
+
+        self.connection.commit()
+
     def get_planned_anime(self) -> list:
         try:
             self.cursor.execute("SELECT name from planned")
-            return self.cursor.fetchall()
+            return list(map(lambda x: x[0], self.cursor.fetchall()))
         except sqlite3.Error as e:
             print(f"Error when adding data: {e}")
             return []
@@ -48,7 +55,7 @@ class AniFrog:
     def get_watching_anime(self) -> list:
         try:
             self.cursor.execute("SELECT name from watching")
-            return self.cursor.fetchall()
+            return list(map(lambda x: x[0], self.cursor.fetchall()))
         except sqlite3.Error as e:
             print(f"Error when adding data: {e}")
             return []
@@ -56,7 +63,7 @@ class AniFrog:
     def get_completed_anime(self) -> list:
         try:
             self.cursor.execute("SELECT name from completed")
-            return self.cursor.fetchall()
+            return list(map(lambda x: x[0], self.cursor.fetchall()))
         except sqlite3.Error as e:
             print(f"Error when adding data: {e}")
             return []
