@@ -1,4 +1,4 @@
 /venv/*
-/ani_frog.db
+/src/db/ani_frog.db
 /config.py
 /token.json

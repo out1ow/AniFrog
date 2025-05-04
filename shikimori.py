@@ -21,8 +21,7 @@ class Shikimori:
                  client_id:     Optional[str] = None,
                  client_secret: Optional[str] = None,
                  token:         Optional[Mapping] = None,
-                 redirect_uri:  str = 'urn:ietf:wg:oauth:2.0:oob',
-                 scope:         Optional[Sequence[str]] = None
+                 redirect_uri:  str = 'urn:ietf:wg:oauth:2.0:oob'
                  ) -> None:
 
         self._client_id = client_id
@@ -35,10 +34,10 @@ class Shikimori:
             'client_secret': self._client_secret,
         }
         self._client = OAuth2Session(self._client_id, auto_refresh_url=self._TOKEN_URL, auto_refresh_kwargs=self._extra,
-                                     scope=scope, redirect_uri=redirect_uri, token=token, token_updater=token_saver)
+                                     scope=["user_rates"], redirect_uri=redirect_uri, token=token, token_updater=token_saver)
         self._client.headers.update(self._headers)
         if token == None: self.authorize()
-        self.user_id = self._client.get("https://shikimori.one/api/users/whoami").json()["id"]
+        self._user_id = self._client.get("https://shikimori.one/api/users/whoami").json()["id"]
 
     def authorize(self):
         auth_url = self.SHIKIMORI_URL + '/oauth/authorize'
@@ -55,25 +54,36 @@ class Shikimori:
     def token(self) -> dict:
         return self._client.token
 
+#========================================================================
+
     def get_data(self, path):
         return self._client.get(path).json()
 
     def get_user_data(self) -> list:
-        return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self.user_id}").json()
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self._user_id}").json()
 
     def get_user_anime(self, status: str='') -> list:
         params = {
             "limit": 500,
              "status": status
         }
-        return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self.user_id}/anime_rates", params=params).json()
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/users/{self._user_id}/anime_rates", params=params).json()
 
-    def get_anime(self, name: str) -> str:
+    def get_anime(self, name: str, limit: int=1) -> list:
+        params = {
+            "search": name,
+            "limit": limit
+        }
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/animes/", params=params).json()
+
+    def get_anime_id(self, name: str) -> dict:
         params = {
             "search": name
         }
         i = self._client.get(f"{self.SHIKIMORI_URL}/api/animes/", params=params).json()[0]['id']
-        return self._client.get(f"{self.SHIKIMORI_URL}/api/animes/{i}").json()
+        return self._client.get(f"{self.SHIKIMORI_URL}/api/animes/{i}", params=params).json()
+
+    # TODO: придумать что-то с превьюшками анимешек
 
     # def get_anime_preview(self, name: str) -> str:
     #     data = self.get_anime(name)
@@ -83,3 +93,17 @@ class Shikimori:
     #     f.write(img)
     #     f.close()
     #     return f"/src/previews/{data[0]['id']}.jpg"
+
+#========================================================================
+
+    # TODO: реализовать методы POST для изменения пользовательского списка
+    def post_user_anime(self, name: str):
+        params = {
+            "user_rate": {
+                "score": "10",
+                "target_id": 263,
+                "text": "test",
+                "user_id": self._user_id
+            }
+        }
+        return self._client.post(f"{self.SHIKIMORI_URL}/api/v2/user_rates/{self._user_id}/increment")

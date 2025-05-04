@@ -2,7 +2,7 @@ import sqlite3
 import os
 
 class DatabaseManager:
-    _DB_FILE = "ani_frog.db"
+    _DB_FILE = "src/db/ani_frog.db"
 
     def __init__(self):
         try:
@@ -44,6 +44,8 @@ class DatabaseManager:
 
         self.connection.commit()
 
+#========================================================================
+
     def get_planned_anime(self) -> list:
         try:
             self.cursor.execute("SELECT name from planned")
@@ -54,8 +56,8 @@ class DatabaseManager:
 
     def get_watching_anime(self) -> list:
         try:
-            self.cursor.execute("SELECT name from watching")
-            return list(map(lambda x: x[0], self.cursor.fetchall()))
+            self.cursor.execute("SELECT name, completed_episodes, episodes from watching")
+            return self.cursor.fetchall()
         except sqlite3.Error as e:
             print(f"Error when adding data: {e}")
             return []
@@ -67,7 +69,9 @@ class DatabaseManager:
         except sqlite3.Error as e:
             print(f"Error when adding data: {e}")
             return []
+
 #========================================================================
+
     def add_planned_anime(self, anime: list) -> bool:
         """anime = [name1, name2.....]"""
         try:
