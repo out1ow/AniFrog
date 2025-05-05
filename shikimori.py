@@ -36,14 +36,16 @@ class Shikimori:
         self._client = OAuth2Session(self._client_id, auto_refresh_url=self._TOKEN_URL, auto_refresh_kwargs=self._extra,
                                      scope=["user_rates"], redirect_uri=redirect_uri, token=token, token_updater=token_saver)
         self._client.headers.update(self._headers)
-        if token == None: self.authorize()
-        self._user_id = self._client.get("https://shikimori.one/api/users/whoami").json()["id"]
+        # if token == None: self.authorize()
+        self._user_id = None
 
-    def authorize(self):
+    def get_auth_url(self):
         auth_url = self.SHIKIMORI_URL + '/oauth/authorize'
-        print(self._client.authorization_url(auth_url)[0])
-        code = input()
+        return self._client.authorization_url(auth_url)[0]
+
+    def authorize(self, code):
         self.fetch_token(code)
+        self._user_id = self._client.get("https://shikimori.one/api/users/whoami").json()["id"]
 
     def fetch_token(self, code: str) -> dict:
         self._client.fetch_token(self._TOKEN_URL, code, client_secret=self._client_secret)
@@ -97,13 +99,13 @@ class Shikimori:
 #========================================================================
 
     # TODO: реализовать методы POST для изменения пользовательского списка
-    def post_user_anime(self, name: str):
-        params = {
-            "user_rate": {
-                "score": "10",
-                "target_id": 263,
-                "text": "test",
-                "user_id": self._user_id
-            }
-        }
-        return self._client.post(f"{self.SHIKIMORI_URL}/api/v2/user_rates/{self._user_id}/increment")
+    # def post_user_anime(self, name: str):
+    #     params = {
+    #         "user_rate": {
+    #             "score": "10",
+    #             "target_id": 263,
+    #             "text": "test",
+    #             "user_id": self._user_id
+    #         }
+    #     }
+    #     return self._client.post(f"{self.SHIKIMORI_URL}/api/v2/user_rates/{self._user_id}/increment")
